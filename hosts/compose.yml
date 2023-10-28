@@ -1,0 +1,39 @@
+version: "3.8"
+
+volumes:
+  v_host_1:
+    name: v_host_1
+  v_host_2:
+    name: v_host_2
+  v_host_3:
+    name: v_host_3
+  
+  v_host_main:
+    name: v_host_main
+
+
+networks:
+  ansible:
+    name: ansible
+
+
+services:
+  v_host_main:
+    image: local/ubuntu:ansible
+    container_name: v_host_main
+    volumes:
+      - v_host_main:/home/ansible
+      - ./ssh:/home/ansible/.ssh
+      - ./sudoers:/etc/sudoers.d/ansible
+      - ../src:/home/ansible/src:rw
+    networks:
+      - ansible
+
+  v_host_1:
+    image: local/ubuntu:ansible
+    container_name: v_host_1
+    volumes:
+      - v_host_1:/home/ansible
+      - ./sudoers:/etc/sudoers.d/ansible
+    networks:
+      - ansible
